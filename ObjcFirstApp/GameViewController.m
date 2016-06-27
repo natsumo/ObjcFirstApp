@@ -1,0 +1,130 @@
+//
+//  GameViewController.m
+//  ObjcFirstApp
+//
+//  Created by Natsumo Ikeda on 2016/06/27.
+//  Copyright © 2016年 NIFTY Corporation. All rights reserved.
+//
+
+#import "GameViewController.h"
+
+@interface GameViewController ()
+// タップ回数
+@property int *count;
+// 「tapFlag」的のタップ可否設定
+@property BOOL tapFlag;
+// タイマー（秒）
+@property NSInteger countTimer;
+// 「label」ラベル
+@property (weak, nonatomic) IBOutlet UILabel *label;
+// 「counter」テキストフィールド
+@property (weak, nonatomic) IBOutlet UITextField *counter;
+// 「start」ボタン
+@property (weak, nonatomic) IBOutlet UIButton *start;
+// 「ランキングを見る」ボタン
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *checkRanking;
+
+@end
+
+@implementation GameViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    // 文字サイズ自動調整
+    self.label.adjustsFontSizeToFitWidth = true;
+    // ラベルの初期設定
+    self.label.text = @"↓Startボタンを押してゲームスタート↓";
+    // テキストフィールド編集不可
+    self.counter.enabled = false;
+    // 的のタップを不可に設定
+    self.tapFlag = false;
+    
+}
+
+// 「start」ボタン押下時の処理
+- (IBAction)startGame:(UIButton *)sender {
+    // 実行中ボタンの無効化
+    sender.enabled = false;
+    self.checkRanking.enabled = false;
+    // カウンターを0にする
+    self.count = 0;
+    // タイマーを13秒にする
+    self.countTimer = 13;
+    // タイマーを起動
+    [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(timerAction:) userInfo:nil repeats:NO];
+}
+
+// 【mBaaS】データの保存
+- (void)saveName:(NSString *)name saveScore:(int *)score {
+    // **********【問題１】名前とスコアを保存しよう！**********
+    // 保存先クラスを作成
+    NCMBObject *obj = [NCMBObject objectWithClassName:@"GameScore"];
+    // 値を設定
+    [obj setObject:name forKey:@"name"];
+    [obj setObject:score forKey:@"score"];
+    // 保存を実施
+    [obj saveInBackgroundWithBlock:^(NSError *error) {
+        if (error) {
+            // 保存に失敗した場合の処理
+            NSLog(@"保存に失敗しました。エラーコード:%ld", error.code);
+        }else{
+            // 保存に成功した場合の処理
+            NSLog(@"保存に成功しました。objectId:\(obj.objectId)");
+        }
+    }];
+    // **************************************************
+}
+
+// タイマーの処理
+- (void)timerAction:(NSTimer *)sender {
+    if (_countTimer >= 11) {
+        self.label.text = [NSString stringWithFormat:@"%ld", self.countTimer -10];
+    } else {
+        self.tapFlag = true;
+        if (self.countTimer == 10) {
+            self.label.text = @"スタート！";
+        } else if (self.countTimer <= 9 && self.countTimer >= 1) {
+            self.label.text = [NSString stringWithFormat:@"%ld", self.countTimer];
+        } else {
+            self.tapFlag = false;
+            self.label.text = @"タイムアップ！";
+            // タイマーストップ
+            [sender invalidate];
+            // 名前入力アラートの表示
+            [self inputName:self.count];
+        }
+    }
+    self.countTimer -= 1;
+    
+}
+
+// 名前入力アラートの表示
+- (void)inputName:(int *)sender {
+    // 名前を入力するアラートを表示
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"スコア登録" message:@"名前を入力してください" preferredStyle:UIAlertControllerStyleAlert];
+    // UIAlertControllerにtextFieldを追加
+    [alert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+    }];
+    // アラートの「OK」ボタン押下時の処理
+    [alert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        // 名前とスコアを保存
+        [self saveName:alert.textFields[0].text saveScore: sender];
+        // 名前とスコアの表示
+        self.label.text = [NSString stringWithFormat:@"%@さんのスコアは%d連打でした", alert.textFields[0].text, *sender];
+        // 実行後ボタンの有効化
+        self.start.enabled = true;
+        self.checkRanking.enabled = true;
+    }]];
+    [self presentViewController:alert animated:true completion:nil];
+    
+}
+
+// viewシングルタップ時の処理
+- (IBAction)tapView:(UITapGestureRecognizer *)sender {
+    if (self.tapFlag) {
+        self.count += 1;
+        self.counter.text = [NSString stringWithFormat:@"%d", *self.count];
+    }
+}
+
+@end
