@@ -15,27 +15,27 @@
 
 * 模範解答は以下です
 
-```swift
+```objc
 // **********【問題２】ランキングを表示しよう！**********
 // GameScoreクラスを検索するクエリを作成
-let query = NCMBQuery(className: "GameScore")
+NCMBQuery *query = [NCMBQuery queryWithClassName:@"GameScore"];
 // scoreの降順でデータを取得するように設定する
-query.addDescendingOrder("score")
+[query addDescendingOrder:@"score"];
 // 検索件数を設定
-query.limit = Int32(rankingNumber)
+query.limit = rankingNumber;
 // データストアを検索
-query.findObjectsInBackgroundWithBlock { (objects: [AnyObject]!, error: NSError!) -> Void in
-    if error != nil {
-        // 検索に失敗した場合の処理
-        print("検索に失敗しました。エラーコード：\(error.code)")
-    } else {
-        // 検索に成功した場合の処理
-        print("検索に成功しました。")
-        // 取得したデータを格納
-        self.rankingArray = objects as! Array
-        // テーブルビューをリロード
-        self.rankingTableView.reloadData()
-    }
+[query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+if (error) {
+// 検索に失敗した場合の処理
+NSLog(@"検索に失敗しました。エラーコード：%ld", error.code);
+} else {
+// 検索に成功した場合の処理
+NSLog(@"検索に成功しました。");
+// 取得したデータを格納
+self.rankingArray = objects;
+// テーブルビューをリロード
+[self.rankingTableView reloadData];
 }
+}];
 // **************************************************
 ```

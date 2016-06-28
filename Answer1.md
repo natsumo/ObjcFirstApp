@@ -16,22 +16,22 @@
 
 * 模範解答は以下です
 
-```swift
+```objc
 // **********【問題１】名前とスコアを保存しよう！**********
 // 保存先クラスを作成
-let obj = NCMBObject(className: "GameScore")
+NCMBObject *obj = [NCMBObject objectWithClassName:@"GameScore"];
 // 値を設定
-obj.setObject(name, forKey: "name")
-obj.setObject(score, forKey: "score")
+[obj setObject:name forKey:@"name"];
+[obj setObject:[NSNumber numberWithInt:score] forKey:@"score"];
 // 保存を実施
-obj.saveInBackgroundWithBlock{(error: NSError!) -> Void in 
-    if (error != nil) {
-        // 保存に失敗した場合の処理
-        print("保存に失敗しました。エラーコード:\(error.code)")
-    }else{
-        // 保存に成功した場合の処理
-        print("保存に成功しました。objectId:\(obj.objectId)")
-    }
+[obj saveInBackgroundWithBlock:^(NSError *error) {
+if (error) {
+// 保存に失敗した場合の処理
+NSLog(@"保存に失敗しました。エラーコード:%ld", error.code);
+}else{
+// 保存に成功した場合の処理
+NSLog(@"保存に成功しました。objectId:%@",obj.objectId);
 }
+}];
 // **************************************************
 ```
