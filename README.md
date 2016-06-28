@@ -23,10 +23,10 @@
 
 ▼問題用プロジェクト▼
 
-[__「連打ゲーム」__](https://github.com/natsumo/SwiftFirstApp/archive/master.zip)
+[__「連打ゲーム」__](https://github.com/natsumo/ObjcFirstApp/archive/master.zip)
 
 1. 上記リンクをクリックしてzipファイルをローカルに保存します
-1. zipファイルを解凍して、`SwiftFirstApp.xcworkspace`をダブルクリックしてXcodeでプロジェクトを開きます
+1. zipファイルを解凍して、`ObjcFirstApp.xcworkspace`をダブルクリックしてXcodeでプロジェクトを開きます
 1. アプリを実行し、「連打ゲーム」で遊んでみましょう
 
 #### 「連打ゲーム」の操作方法
@@ -50,7 +50,7 @@
 
 ![Xcode](/readme-img/Xcode.png)
 
-* `AppDelegate.swift`を編集します
+* `AppDelegate.m`を編集します
 * 先程[ニフティクラウドmobile backend](http://mb.cloud.nifty.com/)のダッシュボード上で確認したAPIキーを貼り付けます
 
 ![問題0-1](/readme-img/0-1.png)
@@ -59,7 +59,7 @@
  * このとき、ダブルクォーテーション（`"`）を消さないように注意してください！
 
 ## __【問題１】__：名前とスコアの保存をしてみよう！
-`GameViewController.swift`を開きます。下図の__`saveScore`__メソッドを編集し、引数の__`name`__（アラートで入力した名前）と__`score`__（連打ゲームでタップした回数）の値をmBaaSに保存する処理をコーディングしてください
+`GameViewController.m`を開きます。下図の__`saveName`__メソッドを編集し、引数の__`name`__（アラートで入力した名前）と__`score`__（連打ゲームでタップした回数）の値をmBaaSに保存する処理をコーディングしてください
 
 ![問題1-1](/readme-img/1-1.png)
 
@@ -68,8 +68,8 @@
 * `name`を保存するフィールドを「`name`」、`score`を保存するフィールドを「`score`」として保存してください
 
 ### ヒント
-* [ニフティクラウドmobile backend](http://mb.cloud.nifty.com/)のiOSドキュメントはObjective-Cで書かれていますので、Swiftに書き換えたものを用意しました
- * [Swiftでデータベースを使おう！①（保存・取得・更新・削除）](http://qiita.com/natsumo/items/c00cf7a48e0f8cd8d236)
+* [ニフティクラウドmobile backend](http://mb.cloud.nifty.com/)のiOSドキュメントを参考にしてください
+ * [データストア（iOS）基本的な使い方](http://mb.cloud.nifty.com/doc/current/datastore/basic_usage_ios.html)
 
 ### コーディング後の作業
 問題１のコーディングが完了したら、下記の作業を行います
@@ -78,21 +78,21 @@ __【作業1-1】__それぞれ該当する箇所に以下の処理を追記し�
 
 * 保存に失敗した場合の処理を行う箇所に追記
 
-```swift
+```objc
 // 保存に失敗した場合の処理
-print("エラーが発生しました。エラーコード:\(error.code)")
+NSLog(@"保存に失敗しました。エラーコード:%ld", error.code);
 ```
 
 * 保存に成功した場合の処理を行う箇所に追記
 
-```swift
+```objc
 // 保存に成功した場合の処理
-print("保存に成功しました。objectId:\(obj.objectId)")
+NSLog(@"保存に成功しました。objectId:%@",obj.objectId);
 ```
 
 __【作業1-2】__シュミレーターで実行、「Start」ボタンを押してゲームを遊びます
 
-* 名前を入力し、「OK」がクリックされると【問題１】で作成した`saveScore`メソッドが呼ばれ、データが保存されます
+* 名前を入力し、「OK」がクリックされると【問題１】で作成した`saveName`メソッドが呼ばれ、データが保存されます
 * このとき下記のいずれかのログが出力されます
 
  * 「`保存に成功しました。objectId:************`」の場合は保存成功です
@@ -104,20 +104,20 @@ __【作業1-2】__シュミレーターで実行、「Start」ボタンを押�
 
 ▼答えはこちら▼
 
-[__【問題１】解答__](https://github.com/natsumo/SwiftFirstApp/blob/AnswerProject/Answer1.md)
+[__【問題１】解答__](https://github.com/natsumo/ObjcFirstApp/blob/AnswerProject/Answer1.md)
 
 
 ## __【問題２】__：ランキングを表示しよう！
-`RankingViewController.swift`を開きます。下図の`checkRanking`メソッドを編集し、データストアの`GameScore`クラスに保存した`name`と`score`のデータを`score`の降順（スコアの高い順）で検索・取得する処理をコーディングしてください
+`RankingViewController.m`を開きます。下図の`checkRanking`メソッドを編集し、データストアの`GameScore`クラスに保存した`name`と`score`のデータを`score`の降順（スコアの高い順）で検索・取得する処理をコーディングしてください
 
 ![問題2-1](/readme-img/2-1.png)
 
 * 検索データ件数は５件とします
- * ただし、この値は「`rankingNumber`」としてフィールドに設定しているため、「`5`」の代わりに「`Int32(rankingNumber)`」を使用して設定してください
+ * ただし、この値は「`rankingNumber`」としてフィールドに設定しているため、「`5`」の代わりに「`rankingNumber`」を使用して設定してください
 
 ### ヒント
-* [ニフティクラウドmobile backend](http://mb.cloud.nifty.com/)のiOSドキュメントはObjective-Cで書かれていますので、Swiftに書き換えたものを用意しました
- * [Swiftでデータベースを使おう！③（ランキングを作る・アクセス権限）](http://qiita.com/natsumo/items/25074fa1ce209033e98e)
+* [ニフティクラウドmobile backend](http://mb.cloud.nifty.com/)のiOSドキュメントを参考にしてください
+ * [データストア（iOS）ランキングを作る](http://mb.cloud.nifty.com/doc/current/datastore/ranking_ios.html#/iOS/)
 
 ### コーディング後の作業
 問題２のコーディングが完了したら、下記の作業を行います
@@ -126,16 +126,16 @@ __【作業2-1】__該当する箇所に以下の処理を追記して、実行�
 
 * 検索に失敗した場合の処理を行う箇所に追記
 
-```swift
+```objc
 // 検索に失敗した場合の処理
-print("検索に失敗しました。エラーコード:\(error.code)")
+NSLog(@"検索に失敗しました。エラーコード：%ld", error.code);
 ```
 
 * 検索に成功した場合の処理を行う箇所に追記
 
-```swift
+```objc
 // 検索に成功した場合の処理
-print("検索に成功しました。")
+NSLog(@"検索に成功しました。");
 ```
 
 __【作業2-2】__シュミレーターで実行し、「ランキングを見る」ボタンをタップします
@@ -153,11 +153,11 @@ __【作業2-3】__検索に成功したら、該当する箇所に以下の処�
 
 * 検索に成功した場合の処理を行う箇所に追記
 
-```swift
+```objc
 // 取得したデータを格納
-self.rankingArray = objects as! Array
+self.rankingArray = objects;
 // テーブルビューをリロード
-self.rankingTableView.reloadData()
+[self.rankingTableView reloadData];
 ```
 
 __【作業2-4】__シュミレーターで実行、「ランキングを見る」ボタンを押します
@@ -168,7 +168,7 @@ __【作業2-4】__シュミレーターで実行、「ランキングを見る�
 
 ▼答えはこちら▼
 
-[__【問題２】解答__](https://github.com/natsumo/SwiftFirstApp/blob/AnswerProject/Answer2.md)
+[__【問題２】解答__](https://github.com/natsumo/ObjcFirstApp/blob/AnswerProject/Answer2.md)
 
 ## 参考
 
@@ -176,6 +176,6 @@ __【作業2-4】__シュミレーターで実行、「ランキングを見る�
 
 ▼完成版プロジェクト▼
 
-[__「【完成版】連打ゲーム」__](https://github.com/natsumo/SwiftFirstApp/archive/AnswerProject.zip)
+[__「【完成版】連打ゲーム」__](https://github.com/natsumo/ObjcFirstApp/archive/AnswerProject.zip)
 
 * APIキーを設定してご利用ください
