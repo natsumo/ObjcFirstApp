@@ -25,13 +25,13 @@ NCMBObject *obj = [NCMBObject objectWithClassName:@"GameScore"];
 [obj setObject:[NSNumber numberWithInt:score] forKey:@"score"];
 // 保存を実施
 [obj saveInBackgroundWithBlock:^(NSError *error) {
-if (error) {
-// 保存に失敗した場合の処理
-NSLog(@"保存に失敗しました。エラーコード:%ld", error.code);
-}else{
-// 保存に成功した場合の処理
-NSLog(@"保存に成功しました。objectId:%@",obj.objectId);
-}
+    if (error) {
+        // 保存に失敗した場合の処理
+        NSLog(@"保存に失敗しました。エラーコード:%ld", error.code);
+    }else{
+        // 保存に成功した場合の処理
+        NSLog(@"保存に成功しました。objectId:%@",obj.objectId);
+    }
 }];
 // **************************************************
 ```

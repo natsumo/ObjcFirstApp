@@ -25,17 +25,17 @@ NCMBQuery *query = [NCMBQuery queryWithClassName:@"GameScore"];
 query.limit = rankingNumber;
 // データストアを検索
 [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-if (error) {
-// 検索に失敗した場合の処理
-NSLog(@"検索に失敗しました。エラーコード：%ld", error.code);
-} else {
-// 検索に成功した場合の処理
-NSLog(@"検索に成功しました。");
-// 取得したデータを格納
-self.rankingArray = objects;
-// テーブルビューをリロード
-[self.rankingTableView reloadData];
-}
+    if (error) {
+        // 検索に失敗した場合の処理
+        NSLog(@"検索に失敗しました。エラーコード：%ld", error.code);
+    } else {
+        // 検索に成功した場合の処理
+        NSLog(@"検索に成功しました。");
+        // 取得したデータを格納
+        self.rankingArray = objects;
+        // テーブルビューをリロード
+        [self.rankingTableView reloadData];
+    }
 }];
 // **************************************************
 ```
