@@ -1,10 +1,10 @@
 # 【iOS問題集】<br>オンラインランキング機能を作ってみよう！<br>「連打ゲーム」
-_2017/05/16作成 (2017/05/17修正)_
+_2017/05/16作成 (2017/05/19修正)_
 
 ![RendaGame](/readme-img/RendaGame.png)
 
 GitHub<br>
-**https://github.com/natsumo/ObjcFirstApp**
+**https://goo.gl/FNGeKI**
 
 <div style="page-break-before:always"></div>
 
